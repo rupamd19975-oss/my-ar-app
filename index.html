@@ -1,0 +1,17 @@
+<script>
+  const GOOGLE_SHEET_CSV_URL = "PASTE_YOUR_PUBLISHED_LINK_HERE";
+
+  async function getLinks() {
+    const response = await fetch(GOOGLE_SHEET_CSV_URL);
+    const text = await response.json(); // Or parse CSV logic
+    // This connects your 'pasted' links to the photos
+    return text.split('\n').map(row => row.split(',')[1]); 
+  }
+
+  const sceneEl = document.querySelector('a-scene');
+  sceneEl.addEventListener("targetFound", async (event) => {
+      const links = await getLinks();
+      const index = event.detail.targetIndex;
+      window.location.href = links[index]; 
+  });
+</script>
